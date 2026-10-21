@@ -40,7 +40,7 @@ export function Phone({ position }: { position: [number, number, number] }) {
 
   const glow = ringing ? '#ff2a1a' : hovered ? '#552200' : '#000000';
   return (
-    <group position={position} rotation={[0, -0.5, 0]} {...handlers}>
+    <group position={position} rotation={[0, -0.5, 0]} {...(enabled ? handlers : {})}>
       <group ref={body}>
         <mesh position={[0, 0.07, 0]} castShadow>
           <boxGeometry args={[0.46, 0.14, 0.34]} />

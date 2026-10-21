@@ -95,6 +95,11 @@ export function Folder3D({ position }: { position: [number, number, number] }) {
         <planeGeometry args={[0.28, 0.14]} />
         <meshStandardMaterial map={label} />
       </mesh>
+      {/* Oversized invisible hit area so the whole folder (and a margin) is clickable. */}
+      <mesh position={[0, 0.1, 0]}>
+        <boxGeometry args={[0.6, 0.24, 0.75]} />
+        <meshBasicMaterial transparent opacity={0} depthWrite={false} />
+      </mesh>
       {(hovered || enabled) && (
         <Html position={[0, 0.3, 0]} center distanceFactor={4} style={{ pointerEvents: 'none' }}>
           <div className={`tag ${enabled ? 'tag-alert' : ''}`}>

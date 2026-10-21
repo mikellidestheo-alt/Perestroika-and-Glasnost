@@ -14,7 +14,7 @@ export function Scene() {
       <directionalLight position={[-2, 3, 3]} intensity={0.25} color="#8aa6ff" />
       <Office />
       <Terminal3D position={[-1.0, 0.755, -0.35]} />
-      <Phone position={[0.95, 0.755, -0.1]} />
+      <Phone position={[1.1, 0.755, -0.15]} />
       <Newspaper3D position={[-0.35, 0.755, 0.35]} />
       <Folder3D position={[0.4, 0.755, 0.3]} />
       <OrbitControls
