@@ -3,6 +3,7 @@ let ctx: AudioContext | null = null;
 let master: GainNode | null = null;
 let hum: { stop: () => void } | null = null;
 let ringTimer: number | null = null;
+let tickTimer: number | null = null;
 let muted = false;
 
 function ac(): AudioContext | null {
@@ -116,6 +117,16 @@ export const sfx = {
     if (ringTimer !== null) {
       window.clearInterval(ringTimer);
       ringTimer = null;
+    }
+  },
+  startTicking() {
+    if (tickTimer !== null) return;
+    tickTimer = window.setInterval(() => tone(1500, 0.025, 'square', 0.04), 140);
+  },
+  stopTicking() {
+    if (tickTimer !== null) {
+      window.clearInterval(tickTimer);
+      tickTimer = null;
     }
   },
   fanfare(good: boolean) {

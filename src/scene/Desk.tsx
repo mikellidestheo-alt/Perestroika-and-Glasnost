@@ -1,14 +1,13 @@
 import { Html } from '@react-three/drei';
-import { useGame, currentScenario } from '../game/store';
+import { useGame, currentScenario, useCanInteract } from '../game/store';
 import { useCanvasTexture, useInteractive, wrapText } from './helpers';
 
 export function Newspaper3D({ position }: { position: [number, number, number] }) {
-  const headline = useGame((s) => s.headlines[0]);
-  const started = useGame((s) => s.started);
-  const panel = useGame((s) => s.panel);
-  const ending = useGame((s) => s.ending);
+  const issue = useGame((s) => s.issues[0]);
+  const headline = { paper: issue.paper.paper, title: issue.paper.headline, sub: issue.paper.sub };
   const open = useGame((s) => s.open);
-  const { hovered, handlers } = useInteractive(started && !ending && panel === 'none', () => open('paper'));
+  const canInteract = useCanInteract();
+  const { hovered, handlers } = useInteractive(canInteract, () => open('paper'));
 
   const tex = useCanvasTexture(
     512,
@@ -28,7 +27,7 @@ export function Newspaper3D({ position }: { position: [number, number, number] }
       ctx.fillStyle = 'rgba(0,0,0,0.2)';
       for (let i = 0; i < 9; i++) ctx.fillRect(24, 340 + (i % 2) * 8, w - 48, 1);
     },
-    [headline],
+    [issue],
   );
 
   return (
@@ -43,7 +42,7 @@ export function Newspaper3D({ position }: { position: [number, number, number] }
       </mesh>
       {hovered && (
         <Html position={[0, 0.25, 0]} center distanceFactor={4} style={{ pointerEvents: 'none' }}>
-          <div className="tag">Газеты «Правда» и «Известия»</div>
+          <div className="tag">Архив газет</div>
         </Html>
       )}
     </group>
@@ -53,14 +52,12 @@ export function Newspaper3D({ position }: { position: [number, number, number] }
 export function Folder3D({ position }: { position: [number, number, number] }) {
   const stage = useGame((s) => s.stage);
   const answered = useGame((s) => s.phoneAnswered);
-  const started = useGame((s) => s.started);
-  const panel = useGame((s) => s.panel);
-  const ending = useGame((s) => s.ending);
   const open = useGame((s) => s.open);
+  const canInteract = useCanInteract();
   const scenario = currentScenario(stage);
   const locked = !!scenario.crisis && !answered;
-  const enabled = started && !ending && panel === 'none' && !locked;
-  const { hovered, handlers } = useInteractive(started && !ending && panel === 'none', () => {
+  const enabled = canInteract && !locked;
+  const { hovered, handlers } = useInteractive(canInteract, () => {
     if (!locked) open('folder');
   });
 

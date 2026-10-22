@@ -3,19 +3,17 @@ import { useFrame } from '@react-three/fiber';
 import { Html } from '@react-three/drei';
 import type { Group } from 'three';
 import { sfx } from '../audio/sfx';
-import { useGame, currentScenario } from '../game/store';
+import { useGame, currentScenario, useCanInteract } from '../game/store';
 import { useInteractive } from './helpers';
 
 export function Phone({ position }: { position: [number, number, number] }) {
   const stage = useGame((s) => s.stage);
   const answered = useGame((s) => s.phoneAnswered);
-  const panel = useGame((s) => s.panel);
-  const ending = useGame((s) => s.ending);
-  const started = useGame((s) => s.started);
+  const canInteract = useCanInteract();
   const open = useGame((s) => s.open);
 
-  const ringing = started && !ending && !!currentScenario(stage).crisis && !answered && panel === 'none';
-  const enabled = started && !ending && panel === 'none' && !!currentScenario(stage).crisis && !answered;
+  const ringing = canInteract && !!currentScenario(stage).crisis && !answered;
+  const enabled = ringing;
   const { hovered, handlers } = useInteractive(enabled, () => {
     sfx.stopRing();
     open('phone');

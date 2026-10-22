@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { GLOSSARY_LIST } from '../game/glossary';
 import { SCENARIOS } from '../game/scenarios';
 import { useGame } from '../game/store';
 import { MetricBars } from './MetricBars';
@@ -8,7 +7,7 @@ import { Overlay } from './Overlay';
 export function TerminalOverlay() {
   const decisions = useGame((s) => s.decisions);
   const stage = useGame((s) => s.stage);
-  const [tab, setTab] = useState<'metrics' | 'log' | 'vocab'>('metrics');
+  const [tab, setTab] = useState<'metrics' | 'log'>('metrics');
 
   return (
     <Overlay className="crt">
@@ -19,9 +18,6 @@ export function TerminalOverlay() {
         </button>
         <button className={tab === 'log' ? 'on' : ''} onClick={() => setTab('log')}>
           [ЖУРНАЛ РЕШЕНИЙ]
-        </button>
-        <button className={tab === 'vocab' ? 'on' : ''} onClick={() => setTab('vocab')}>
-          [СЛОВАРЬ]
         </button>
       </div>
 
@@ -41,23 +37,11 @@ export function TerminalOverlay() {
             const c = s.choices.find((x) => x.id === d.choice)!;
             return (
               <li key={d.scenarioId}>
-                &gt; {s.date}: {s.title} → {c.id}. {c.label}
+                &gt; {s.date}: {s.title} → {c.title}
               </li>
             );
           })}
         </ul>
-      )}
-      {tab === 'vocab' && (
-        <dl className="vocab">
-          {GLOSSARY_LIST.map((g) => (
-            <div key={g.term}>
-              <dt>{g.term}</dt>
-              <dd>
-                {g.ru} <em>({g.en})</em>
-              </dd>
-            </div>
-          ))}
-        </dl>
       )}
     </Overlay>
   );

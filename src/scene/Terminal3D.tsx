@@ -1,16 +1,14 @@
 import { Html } from '@react-three/drei';
-import { useGame } from '../game/store';
+import { useGame, useCanInteract } from '../game/store';
 import { METRIC_KEYS, METRIC_LABELS } from '../game/types';
 import { useCanvasTexture, useInteractive } from './helpers';
 
 export function Terminal3D({ position }: { position: [number, number, number] }) {
   const metrics = useGame((s) => s.metrics);
   const stage = useGame((s) => s.stage);
-  const started = useGame((s) => s.started);
-  const panel = useGame((s) => s.panel);
-  const ending = useGame((s) => s.ending);
   const open = useGame((s) => s.open);
-  const { hovered, handlers } = useInteractive(started && !ending && panel === 'none', () => open('terminal'));
+  const canInteract = useCanInteract();
+  const { hovered, handlers } = useInteractive(canInteract, () => open('terminal'));
 
   const tex = useCanvasTexture(
     512,

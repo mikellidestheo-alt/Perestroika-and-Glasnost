@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import * as THREE from 'three';
 import { useCanvasTexture } from './helpers';
+import { WindowView } from './WindowView';
 
 const WOOD = '#3a2216';
 const DARK_WOOD = '#241209';
@@ -35,36 +36,12 @@ function Bookshelf({ position, rotation = 0 }: { position: [number, number, numb
   );
 }
 
-function Window() {
+function Curtains() {
   return (
-    <group position={[0, 1.7, -2.18]}>
-      <mesh>
-        <planeGeometry args={[1.8, 1.4]} />
-        <meshBasicMaterial color="#16284a" />
-      </mesh>
-      {/* Kremlin star glow on the horizon */}
-      <mesh position={[0.45, -0.15, 0.01]}>
-        <circleGeometry args={[0.05, 5]} />
-        <meshBasicMaterial color="#ff2b2b" />
-      </mesh>
-      <mesh position={[0.45, -0.38, 0.005]}>
-        <boxGeometry args={[0.1, 0.45, 0.01]} />
-        <meshBasicMaterial color="#5a1a12" />
-      </mesh>
-      {[-0.9, 0, 0.9].map((x) => (
-        <mesh key={x} position={[x, 0, 0.03]}>
-          <boxGeometry args={[0.05, 1.4, 0.05]} />
-          <meshStandardMaterial color={DARK_WOOD} />
-        </mesh>
-      ))}
-      <mesh position={[0, 0, 0.03]}>
-        <boxGeometry args={[1.8, 0.05, 0.05]} />
-        <meshStandardMaterial color={DARK_WOOD} />
-      </mesh>
-      {/* Curtains */}
-      {[-1.15, 1.15].map((x) => (
-        <mesh key={x} position={[x, 0, 0.1]}>
-          <boxGeometry args={[0.5, 1.7, 0.08]} />
+    <group position={[0, 1.8, -2.05]}>
+      {[-1.55, 1.55].map((x) => (
+        <mesh key={x} position={[x, 0.1, 0]}>
+          <boxGeometry args={[0.45, 2.1, 0.08]} />
           <meshStandardMaterial color="#6a1218" roughness={1} />
         </mesh>
       ))}
@@ -89,8 +66,8 @@ function Emblem() {
     [],
   );
   return (
-    <mesh position={[-1.55, 2.0, -2.17]}>
-      <planeGeometry args={[0.7, 0.7]} />
+    <mesh position={[0, 2.95, -2.15]}>
+      <planeGeometry args={[0.42, 0.42]} />
       <meshStandardMaterial map={tex} />
     </mesh>
   );
@@ -130,10 +107,11 @@ export function Office() {
         <planeGeometry args={[8, 6]} />
         <meshStandardMaterial color="#2b2018" />
       </mesh>
-      <Window />
+      <WindowView />
+      <Curtains />
       <Emblem />
-      <Bookshelf position={[-2.2, 0, -2.0]} />
-      <Bookshelf position={[2.2, 0, -2.0]} />
+      <Bookshelf position={[-2.5, 0, -2.0]} />
+      <Bookshelf position={[2.5, 0, -2.0]} />
 
       {/* desk */}
       <mesh position={[0, 0.72, 0]} castShadow receiveShadow>
